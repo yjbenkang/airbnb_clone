@@ -1,17 +1,17 @@
 {% extends "base.html" %} {% block page_name %} Home {% endblock page_name %}
 {%block content %}
 <div>
-  {% for room in rooms.object_list %}
+  {% for room in page.object_list %}
   <h1>{{room.name}}/ ${{room.price}}</h1>
   {% endfor %}
 </div>
 <h5>
-  {% if rooms.has_previous %}
-  <a href="/?page={{rooms.number|add:-1}}">Previous</a>
+  {% if page.has_previous %}
+  <a href="/?page={{page.previous_page_number}}">Previous</a>
   {% endif %}
-  <span>Page {{rooms.number}} of {{rooms.paginator.num_pages}}</span>
-  {% if rooms.has_next %}
-  <a href="/?page={{rooms.number|add:1}}">Next</a>
+  <span>Page {{page.number}} of {{page.paginator.num_pages}}</span>
+  {% if page.has_next %}
+  <a href="/?page={{page.next_page_number}}">Next</a>
   {% endif %}
 </h5>
 <h4>
