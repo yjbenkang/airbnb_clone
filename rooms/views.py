@@ -28,14 +28,27 @@ def search(request):
     country = request.GET.get("country", "KR")
     room_type = int(request.GET.get("room_type", 0))
     room_types = models.RoomType.objects.all()
-    price = int(request.GET.get("price", 0))
-    guests = int(request.GET.get("guests", 0))
-    bedrooms = int(request.GET.get("bedrooms", 0))
-    beds = int(request.GET.get("beds", 0))
-    baths = int(request.GET.get("baths", 0))
-    s_amenities = request.GET.get("amenities")
-    s_facilities = request.GET.get("facilities")
-    print(s_amenities, s_facilities)
+    try:
+        price = int(request.GET.get("price"))
+        guests = int(request.GET.get("guests"))
+        bedrooms = int(request.GET.get("bedrooms"))
+        beds = int(request.GET.get("beds"))
+        baths = int(request.GET.get("baths"))
+    except ValueError:
+        if "price" not in locals():
+            price = 0
+        if "guests" not in locals():
+            guests = 0
+        if "bedrooms" not in locals():
+            bedrooms = 0
+        if "beds" not in locals():
+            beds = 0
+        if "baths" not in locals():
+            baths = 0
+    instant = request.GET.get("instant", False)
+    super_host = request.GET.get("super_host", False)
+    s_amenities = request.GET.getlist("amenities")
+    s_facilities = request.GET.getlist("facilities")
     form = {
         "city": city,
         "s_room_type": room_type,
@@ -45,6 +58,10 @@ def search(request):
         "bedrooms": bedrooms,
         "beds": beds,
         "baths": baths,
+        "s_amenities": s_amenities,
+        "s_facilities": s_facilities,
+        "instant": instant,
+        "super_host": super_host,
     }
 
     room_types = models.RoomType.objects.all()
