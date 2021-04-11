@@ -24,7 +24,7 @@
             <label for="country">Country</label>
             <select id="country" name = "country">
                 {% for country  in countries  %}
-                    <option value="{{country.code}}">
+                    <option value="{{country.code}}" {% if country.code == s_country %}selected{% endif %}>
                         {{country.name}}
                     </option>
                 {% endfor %}
@@ -34,13 +34,75 @@
         <div>
             <label for="room_type">Room Type</label>
             <select id="room_type" name = "room_type">
+                <option value="0" {% if s_room_type == 0 %}selected{% endif %}>Any kind</option>
                 {% for room_type  in room_types  %}
-                    <option value="{{room_type.pk}}">
+                    <option value="{{room_type.pk}}" {% if s_room_type == room_type.pk %}selected{% endif %}>
                         {{room_type.name}}
                     </option>
                 {% endfor %}
             </select>
         </div>
+
+        <div>
+            <label for="price">Price</label>
+            <input value ="{{price}}" type = "number" id="price" name = "price" placeholder="Search by price!" />
+        </div>
+
+        <div>
+            <label for="guests">Guests</label>
+            <input value ="{{guests}}" type = "number" id="guests" name = "guests" placeholder="Search by guests !" />
+        </div>
+
+        <div>
+            <label for="bedrooms">Bedrooms</label>
+            <input value ="{{bedrooms}}"type = "number" id="bedrooms" name = "bedrooms" placeholder="Search by bedrooms !" />
+        </div>
+
+        <div>
+            <label for="beds">Beds</label>
+            <input value ="{{beds}}"type = "number" id="beds" name = "beds" placeholder="Search by beds !" />
+        </div>
+
+        <div>
+            <label for="baths">Baths</label>
+            <input value ="{{baths}}"type = "number" id="baths" name = "baths" placeholder="Search by baths !" />
+        </div>
+
+        <div>
+            <h3>Amenities</h3>
+            <ul>
+            {% for amenity in amenities  %}
+                <li>
+                    <label for="a_{{amenity.pk}}">{{amenity.name}}</label>
+                    <input id= "a_{{amenity.pk}}" name ="amenities" type="checkbox" value = {{amenity.pk}}/>
+                </li>
+            {% endfor %}
+        </div>
+
+        <div>
+            <h3>Facilities</h3>
+            <ul>
+            {% for facility in facilities  %}
+                <li>
+                    <label for="a_{{facility.pk}}">{{facility.name}}</label>
+                    <input id= "a_{{facility.pk}}" name ="facilities" type="checkbox" value = {{facility.pk}}/>
+                </li>
+            {% endfor %}
+        </div>
+
+        <div>
+            <h3>House Rules</h3>
+            <ul>
+            {% for house_rule in house_rules  %}
+                <li>
+                    <label for="a_{{house_rule.pk}}">{{house_rule.name}}</label>
+                    <input id= "a_{{house_rule.pk}}" name ="house_rules" type="checkbox" />
+                </li>
+            {% endfor %}
+        </div>
+
+
+
         <button>Search</button>
     </form>
 
