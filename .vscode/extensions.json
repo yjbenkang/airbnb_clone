@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "bibhasdn.django-snippets"
+        "bibhasdn.django-snippets",
+        "svipas.prettier-plus"
     ]
 }
