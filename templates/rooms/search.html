@@ -23,6 +23,7 @@
         <div>
             <label for="country">Country</label>
             <select id="country" name = "country">
+                <option value="0" {% if s_country == 0 %}selected{% endif %}>Any Country</option>
                 {% for country  in countries  %}
                     <option value="{{country.code}}" {% if country.code == s_country %}selected{% endif %}>
                         {{country.name}}
@@ -74,8 +75,8 @@
         </div>
 
         <div>
-            <label for="super_host">By Superhost Only?</label>
-            <input type = "checkbox" id="super_host" name = "super_host" {% if super_host %}checked{% endif %} />
+            <label for="superhost">By Superhost Only?</label>
+            <input type = "checkbox" id="superhost" name = "superhost" {% if superhost %}checked{% endif %} />
         </div>
 
 
@@ -123,8 +124,16 @@
             <ul>
             {% for house_rule in house_rules  %}
                 <li>
-                    <label for="a_{{house_rule.pk}}">{{house_rule.name}}</label>
-                    <input id= "a_{{house_rule.pk}}" name ="house_rules" type="checkbox" />
+                    <label for="h_{{house_rule.pk}}">{{house_rule.name}}</label>
+                    <input 
+                        id= "h_{{house_rule.pk}}" 
+                        name ="house_rules" 
+                        type="checkbox" 
+                        value = {{house_rule.pk}}
+                        {% if house_rule.pk|slugify in s_house_rules %}
+                            checked
+                        {% endif %}
+                    />
                 </li>
             {% endfor %}
         </div>
@@ -133,6 +142,12 @@
 
         <button>Search</button>
     </form>
+
+    <h3>Results</h3>
+
+    {% for room in rooms  %}
+        <h3>{{room.name}}</h3>
+    {% endfor %}
 
 
 
