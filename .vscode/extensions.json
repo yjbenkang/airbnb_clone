@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "bibhasdn.django-snippets",
-        "svipas.prettier-plus"
+        "svipas.prettier-plus",
+        "thebarkman.vscode-djaneiro"
     ]
 }
