@@ -9,11 +9,15 @@
 
 {% block content %}
 
-    {% include 'partials/social_login.html' %}
+    <div class="container sm:w-9/12 md:w-1/2 lg:w-5/12 xl:w-1/4 rounded-lg mx-auto w-11/12 my-36 flex flex-col border shadow-2xl border-gray-200 items-center p-6">
+        {% include 'partials/social_login.html' %}
 
-    <form method="POST" action="{% url "users:signup" %}">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button>Sign up</button>
-    </form>
+        <form method="POST" action="{% url "users:signup" %}">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn bg-red-500 text-white">Sign up</button>
+        </form>
+
+    </div>
+        
 {% endblock content %} 
