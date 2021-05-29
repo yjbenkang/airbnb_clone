@@ -11,13 +11,13 @@
 
 {% block content %}
 
-    {% include 'partials/social_login.html' %}
-
-    
-    <form method="POST" action="{% url "users:login" %}">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button>로그인</button>
-    </form>
+    <div class="container sm:w-9/12 md:w-1/2 lg:w-5/12 xl:w-1/4 rounded-lg mx-auto w-11/12 my-36 flex flex-col border-red-500   items-center border p-6 border-gray-400">
+        {% include 'partials/social_login.html' %}
+        <form method="POST" action="{% url "users:login" %}">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button>로그인</button>
+        </form>
+    </div>
 {% endblock content %}
 

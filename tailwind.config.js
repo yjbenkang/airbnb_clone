@@ -11,10 +11,7 @@ module.exports = {
       borderRadius: {
         "xl": "1.5rem"
       }
-    },
-      textColor: {
-        'teal': '#38b2ac;',
-      }
+    }
   },
   variants: {
     extend: {},
