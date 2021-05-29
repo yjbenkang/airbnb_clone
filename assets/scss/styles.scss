@@ -1,6 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 .search-box{
     transition: box-shadow 0.2s linear;
@@ -12,3 +11,18 @@
         @apply py-10 px-5;
     }
 }
+
+.btn{
+    @apply w-full
+    text-center
+    rounded-lg
+    py-5
+    font-bold
+    mb-2;
+}
+
+.input {
+    @apply w-full rounded-lg py-5 px-5 text-left font-bold border border-gray-400 focus:outline-none focus:border-red-500 mb-3
+}
+
+@tailwind utilities;
