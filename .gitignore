@@ -123,6 +123,7 @@ venv.bak/
 # mkdocs documentation
 /site
 uploads/
+node_modules/
 
 # mypy
 .mypy_cache/
