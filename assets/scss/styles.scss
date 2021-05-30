@@ -26,7 +26,10 @@ input {
 }
 
 form {
-    @apply mb-3;
+    input {
+        @apply mb-3;
+    }
+    
 }
 
 @tailwind utilities;
