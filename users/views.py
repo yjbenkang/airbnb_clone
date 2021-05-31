@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
+from django.contrib import messages
 from . import forms, models
 
 
@@ -20,6 +21,7 @@ class LoginView(FormView):
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
             login(self.request, user)
+            messages.success(self.request, f"환영합니다, {user.first_name}님!")
         return super().form_valid(form)
 
 
@@ -83,7 +85,7 @@ def github_callback(request):
             token_json = token_request.json()
             error = token_json.get("error", None)
             if error is not None:
-                raise GithubException()
+                raise GithubException("액세스 토큰을 가질 수 없습니다.")
             else:
                 access_token = token_json.get("access_token")
                 profile_request = requests.get(
@@ -107,7 +109,7 @@ def github_callback(request):
                     try:
                         user = models.User.objects.get(email=email)
                         if user.login_method != models.User.LOGIN_GITHUB:
-                            raise GithubException()
+                            raise GithubException(f"{user.login_method}로 로그인해주십시오.")
                     except models.User.DoesNotExist:
                         user = models.User.objects.create(
                             email=email,
@@ -120,13 +122,15 @@ def github_callback(request):
                         user.set_unusable_password()
                         user.save()
                     login(request, user)
+                    messages.success(request, f"환영합니다, {user.first_name}님!")
                     return redirect(reverse("core:home"))
                 else:
-                    raise GithubException()
+                    raise GithubException("프로필을 가질 수 없습니다.")
         else:
-            raise GithubException()
-    except GithubException:
+            raise GithubException("코드를 가질 수 없습니다.")
+    except GithubException as e:
         # send error message
+        messages.error(request, e)
         return redirect(reverse("users:login"))
 
 
@@ -153,7 +157,7 @@ def kakao_callback(request):
         token_json = token_request.json()
         error = token_json.get("error", None)
         if error is not None:
-            raise KakaoException()
+            raise KakaoException("권한부여 코드를 가질 수 없습니다.")
         access_token = token_json.get("access_token")
         profile_request = requests.get(
             "https://kapi.kakao.com/v2/user/me",
@@ -162,14 +166,14 @@ def kakao_callback(request):
         profile_json = profile_request.json()
         email = profile_json.get("kakao_account").get("email")
         if email is None:
-            raise KakaoException()
+            raise KakaoException("이메일주소를 확보하지 못했습니다.")
         properties = profile_json.get("properties")
         nickname = properties.get("nickname")
         profile_image = properties.get("profile_image")
         try:
             user = models.User.objects.get(email=email)
             if user.login_method != models.User.LOGING_KAKAO:
-                raise KakaoException()
+                raise KakaoException(f"{user.login_method}로 로그인하여 주십시오.")
         except models.User.DoesNotExist:
             user = models.User.objects.create(
                 email=email,
@@ -186,6 +190,8 @@ def kakao_callback(request):
                     f"{nickname}-avatar", ContentFile(photo_request.content)
                 )
         login(request, user)
+        messages.success(request, f"환영합니다, {user.first_name}님!")
         return redirect(reverse("core:home"))
-    except KakaoException:
+    except KakaoException as e:
+        messages.error(request, e)
         return redirect(reverse("users:login"))
