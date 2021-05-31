@@ -9,12 +9,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
 from django.contrib import messages
 from . import forms, models
+from django.contrib.messages.views import SuccessMessageMixin
+from . import forms, models, mixins
 
 
-class LoginView(FormView):
+class LoginView(mixins.LoggedOutOnlyView, FormView):
     template_name = "users/login.html"
     form_class = forms.LoginForm
-    success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -25,14 +26,22 @@ class LoginView(FormView):
             messages.success(self.request, f"환영합니다, {user.first_name}님!")
         return super().form_valid(form)
 
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        another_arg = self.request.GET.get("code")
+        if next_arg is not None:
+            return next_arg
+        else:
+            return reverse("core:home")
+
 
 def log_out(request):
     logout(request)
-    messages.info(request, f"다음에 또 봬요 !")
+    messages.info(request, f"로그아웃되었습니다.")
     return redirect(reverse("core:home"))
 
 
-class SignUpView(FormView):
+class SignUpView(mixins.LoggedOutOnlyView, FormView):
 
     template_name = "users/signup.html"
     form_class = forms.SignUpForm
@@ -108,7 +117,6 @@ def github_callback(request):
                     bio = profile_json.get("bio")
                     if bio is None:
                         bio = ""
-                    print(name, email, bio)
                     try:
                         user = models.User.objects.get(email=email)
                         if user.login_method != models.User.LOGIN_GITHUB:
@@ -206,7 +214,7 @@ class UserProfileView(DetailView):
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
 
     model = models.User
     template_name = "users/update-profile.html"
@@ -220,6 +228,8 @@ class UpdateProfileView(UpdateView):
         "currency",
     )
 
+    success_message = "프로필 수정완료 !"
+
     def get_object(self, queryset=None):
         return self.request.user
 
@@ -232,9 +242,15 @@ class UpdateProfileView(UpdateView):
         return form
 
 
-class UpdatePasswordView(PasswordChangeView):
+class UpdatePasswordView(
+    mixins.EmailLoginOnlyView,
+    mixins.LoggedInOnlyView,
+    SuccessMessageMixin,
+    PasswordChangeView,
+):
 
     template_name = "users/update-password.html"
+    success_message = "비밀번호 수정완료 !"
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
@@ -242,3 +258,6 @@ class UpdatePasswordView(PasswordChangeView):
         form.fields["new_password1"].widget.attrs = {"placeholder": "새로운 비밀번호"}
         form.fields["new_password2"].widget.attrs = {"placeholder": "새로운 비밀번호 확인"}
         return form
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
