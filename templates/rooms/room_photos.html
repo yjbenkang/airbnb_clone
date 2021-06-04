@@ -18,7 +18,7 @@
                 </div>
                 <div class="flex flex-col w-1/4  place-items-center">
                     <a class="btn-link mb-5 bg-green-500" href="#">수정</a>
-                    <a class="btn-link bg-red-600" href="#">삭제</a>
+                    <a class="btn-link bg-red-600" href="{% url 'rooms:delete-photo' room.pk photo.pk %}">삭제</a>
                 </div>
             </div>
         {% endfor %}
