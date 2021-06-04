@@ -183,7 +183,7 @@ class EditPhotoView(LoggedInOnlyView, SuccessMessageMixin, UpdateView):
         return reverse("rooms:photos", kwargs={"pk": room_pk})
 
 
-class AddPhotoView(LoggedInOnlyView, SuccessMessageMixin, FormView):
+class AddPhotoView(LoggedInOnlyView, FormView):
 
     model = models.Photo
     template_name = "rooms/photo_create.html"
@@ -193,3 +193,5 @@ class AddPhotoView(LoggedInOnlyView, SuccessMessageMixin, FormView):
     def form_valid(self, form):
         pk = self.kwargs.get("pk")
         form.save(pk)
+        messages.success(self.request, "사진이 업로드되었습니다.")
+        return redirect(reverse("rooms:photos", kwargs={"pk": pk}))
