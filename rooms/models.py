@@ -1,6 +1,7 @@
 from django.db import models
 from django_countries.fields import CountryField
 from core import models as core_models
+from cal import Calendar
 from django.shortcuts import reverse
 
 # from users import models as user_models
@@ -121,3 +122,8 @@ class Room(core_models.TimeStampedModel):
     def get_next_four_photos(self):
         photos = self.photos.all()[1:5]
         return photos
+
+    def get_calendars(self):
+        calendar = Calendar(2021, 11)
+        print(calendar.get_month())
+        return False
