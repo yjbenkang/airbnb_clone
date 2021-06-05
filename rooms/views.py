@@ -185,9 +185,7 @@ class EditPhotoView(LoggedInOnlyView, SuccessMessageMixin, UpdateView):
 
 class AddPhotoView(LoggedInOnlyView, FormView):
 
-    model = models.Photo
     template_name = "rooms/photo_create.html"
-    fields = ("caption", "file")
     form_class = forms.CreatePhotoForm
 
     def form_valid(self, form):
@@ -195,3 +193,16 @@ class AddPhotoView(LoggedInOnlyView, FormView):
         form.save(pk)
         messages.success(self.request, "사진이 업로드되었습니다.")
         return redirect(reverse("rooms:photos", kwargs={"pk": pk}))
+
+
+class CreateRoomView(LoggedInOnlyView, FormView):
+
+    form_class = forms.CreateRoomForm
+    template_name = "rooms/room_create.html"
+
+    def form_valid(self, form):
+        room = form.save()
+        room.host = self.request.user
+        room.save()
+        messages.success(self.request, "사진이 업로드되었습니다.")
+        return redirect(reverse("rooms:detail", kwargs={"pk": room.pk}))
