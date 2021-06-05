@@ -113,7 +113,11 @@ form {
 }
 
 .cal-grid {
-  @apply grid grid-cols-7 gap-3
+  @apply grid grid-cols-7 gap-3;
+}
+
+.cal-number {
+  @apply w-full text-center rounded p-1 cursor-pointer;
 }
 
 @tailwind utilities;
