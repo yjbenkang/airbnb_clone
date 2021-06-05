@@ -204,5 +204,6 @@ class CreateRoomView(LoggedInOnlyView, FormView):
         room = form.save()
         room.host = self.request.user
         room.save()
-        messages.success(self.request, "사진이 업로드되었습니다.")
+        form.save_m2m()
+        messages.success(self.request, "객실이 업로드되었습니다.")
         return redirect(reverse("rooms:detail", kwargs={"pk": room.pk}))
