@@ -6,20 +6,20 @@ class Calendar(calendar.Calendar):
         super().__init__(firstweekday=6)
         self.year = year
         self.month = month
-        self.day_names = ("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+        self.day_names = ("일", "월", "화", "수", "목", "금", "토")
         self.months = (
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
         )
 
     def get_days(self):
