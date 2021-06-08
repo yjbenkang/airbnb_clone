@@ -8,7 +8,7 @@ class Review(core_models.TimeStampedModel):
     """ Review Model Definition """
 
     review = models.TextField()
-     accuracy = models.IntegerField(
+    accuracy = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
     communication = models.IntegerField(
@@ -24,6 +24,7 @@ class Review(core_models.TimeStampedModel):
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
     value = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+
     user = models.ForeignKey(
         "users.User", related_name="reviews", on_delete=models.CASCADE
     )

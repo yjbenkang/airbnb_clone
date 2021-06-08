@@ -11,21 +11,31 @@
 
 {% block content %}
 
-    <h2>검색</h2>
-
-    <form method="get" action="{% url "rooms:search" %}">
-        {{form.as_p}}
-
-        <button>검색</button>
-    </form>
-
-    <h3>검색 결과</h3>
-
-    {% for room in rooms  %}
-        <h3>{{room.name}}</h3>
+    <div class="flex">
+        <div class="container sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2 rounded-lg mx-auto w-11/12 my-36 flex flex-col border shadow-2xl border-gray-200 items-center p-6">
+            <h1 class="font-bold w-full text-center mb-10">원하는 객실 검색하기</h1>
+            <form method="get" action="{% url "rooms:search" %}">
+                <button class="btn-link my-10">검색</button>
+                {% for field in form %}
+                <div class="w-full mx-auto">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                </div>
     {% endfor %}
+            </form>
+        </div>
+        <div class="container sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2 rounded-lg mx-auto ml-10 w-11/12 my-36 border shadow-2xl border-gray-200  p-6">
+            <h1 class="text-center font-bold mb-10">검색결과</h1>
+            <div class="flex justify-start">
+                {% for room in rooms %} 
+                    {% include 'mixins/room_card.html' with room=room %}
+                {% endfor %}
+            </div>
+            <h5 class="text-center font-md">{{page}}</h5>
 
-    <h5>{{page}}</h5>
+        </div>
+    </div>
+    
 
 
 

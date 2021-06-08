@@ -40,6 +40,7 @@ class CreatePhotoForm(forms.ModelForm):
         photo.room = room
         photo.save()
 
+
 class CreateRoomForm(forms.ModelForm):
     class Meta:
         model = models.Room

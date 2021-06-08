@@ -12,12 +12,20 @@ class CreateError(Exception):
     pass
 
 
-def create(request, room, year, month, day):
+def click_reservation(request, room, year, month, day):
     try:
         date_obj = datetime.datetime(year, month, day)
         room = room_models.Room.objects.get(pk=room)
-        models.BookedDay.objects.get(day=date_obj, reservation__room=room)
-        raise CreateError()
+        booked_day = models.BookedDay.objects.get(day=date_obj, reservation__room=room)
+        host = room.host
+        if request.user == host:
+            reservation = booked_day.reservation
+            print(reservation.pk)
+            return redirect(
+                reverse("reservations:detail", kwargs={"pk": reservation.pk})
+            )
+        else:
+            raise CreateError()
     except (room_models.Room.DoesNotExist, CreateError):
         messages.error(request, "Can't Reserve That Room")
         return redirect(reverse("core:home"))
@@ -58,6 +66,9 @@ def edit_reservation(request, pk, verb):
         reservation.status = models.Reservation.STATUS_CONFIRMED
     elif verb == "cancel":
         reservation.status = models.Reservation.STATUS_CANCELED
+        models.BookedDay.objects.filter(reservation=reservation).delete()
+    elif verb == "pending":
+        reservation.status = models.Reservation.STATUS_PENDING
         models.BookedDay.objects.filter(reservation=reservation).delete()
     reservation.save()
     messages.success(request, "Reservation Updated")
