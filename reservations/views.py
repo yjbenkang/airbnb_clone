@@ -30,12 +30,25 @@ def click_reservation(request, room, year, month, day):
         messages.error(request, "Can't Reserve That Room")
         return redirect(reverse("core:home"))
     except models.BookedDay.DoesNotExist:
+        num = 0
+        same_day = models.BookedDay.objects.filter(day=date_obj)
+        if len(same_day) == 0:
+            num = 0
+        elif len(same_day) >= 1:
+            num += 1
         reservation = models.Reservation.objects.create(
             guest=request.user,
             room=room,
             check_in=date_obj,
             check_out=date_obj + datetime.timedelta(days=1),
         )
+        if num >= 1:
+            booked_day1 = models.BookedDay.objects.create(
+                day=date_obj, reservation=reservation
+            )
+            booked_day2 = models.BookedDay.objects.create(
+                day=date_obj + datetime.timedelta(days=1), reservation=reservation
+            )
         return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
 
 

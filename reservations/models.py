@@ -1,11 +1,11 @@
 import datetime
 from django.db import models
+from django.db.models.fields import IntegerField
 from django.utils import timezone
 from core import models as core_models
 
 
 class BookedDay(core_models.TimeStampedModel):
-
     day = models.DateField()
     reservation = models.ForeignKey("Reservation", on_delete=models.CASCADE)
 

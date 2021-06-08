@@ -52,8 +52,8 @@
                                 <a href="{% url 'reservations:edit' reservation.pk 'pending' %}" class="btn-link block px-5 mb-5">Pending Reservation</a>
                                 <a href="{% url 'reservations:edit' reservation.pk 'cancel' %}" class="btn-link block px-5">Cancel Reservation</a>
                             {% endif %}
-                        {% endif %}
                     {% endif %}
+                {% endif %}
             </div>
         </div>
 
