@@ -34,7 +34,7 @@
             </div>
 
             <div class="py-10 px-5">
-            {% if reservation.status != 'canceled' %}
+                {% if reservation.status != 'canceled' %}
                 {% if reservation.status == 'confirmed' and reservation.is_finished %}
                     <span class="font-medium text-2xl text-center w-full block mb-5">Write your review</span>
                    <form action="{% url 'reviews:create' reservation.room.pk %}" method="POST" class="w-1/2 mx-auto">
@@ -49,8 +49,8 @@
                                 <a href="{% url 'reservations:edit' reservation.pk 'confirm' %}" class="btn-link block px-3 mb-5">Confirm Reservation</a>
                             {% endif %}
                         {% endif %}
+                    {% endif %}
                 {% endif %}
-            {% endif %}
             </div>
         </div>
 
