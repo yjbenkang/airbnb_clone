@@ -17,6 +17,7 @@ def click_reservation(request, room, year, month, day):
         date_obj = datetime.datetime(year, month, day)
         room = room_models.Room.objects.get(pk=room)
         booked_day = models.BookedDay.objects.get(day=date_obj, reservation__room=room)
+        print(booked_day)
         host = room.host
         if request.user == host:
             reservation = booked_day.reservation
@@ -30,19 +31,32 @@ def click_reservation(request, room, year, month, day):
         messages.error(request, "Can't Reserve That Room")
         return redirect(reverse("core:home"))
     except models.BookedDay.DoesNotExist:
-        num = 0
-        same_day = models.BookedDay.objects.filter(day=date_obj)
-        if len(same_day) == 0:
-            num = 0
-        elif len(same_day) >= 1:
-            num += 1
+        first_num = 0
+        second_num = 0
+        first_same_day = models.BookedDay.objects.filter(day=date_obj)
+        second_same_day = models.BookedDay.objects.filter(
+            day=date_obj + datetime.timedelta(days=1)
+        )
+        print(f"first_same_day1:{first_same_day}")
+        print(f"second_same_day1:{second_same_day}")
+        if len(first_same_day) == 0:
+            first_num = 0
+        elif len(first_same_day) >= 1:
+            first_num += 1
+        if len(second_same_day) == 0:
+            second_num = 0
+        elif len(second_same_day) >= 1:
+            second_num += 1
         reservation = models.Reservation.objects.create(
             guest=request.user,
             room=room,
             check_in=date_obj,
             check_out=date_obj + datetime.timedelta(days=1),
         )
-        if num >= 1:
+        print(f"same_day2:{first_same_day}")
+        print(f"second_same_day1:{second_same_day}")
+        print(f"first_num:{first_num}")
+        if first_num >= 1 or (first_num == 0 and second_num >= 1):
             booked_day1 = models.BookedDay.objects.create(
                 day=date_obj, reservation=reservation
             )
