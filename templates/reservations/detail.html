@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_title %}
-    Reservation {{reservation.check_in}}
+    예약 {{reservation.check_in}}
 {% endblock page_title %}
 
 {% block search-bar %}
@@ -29,7 +29,7 @@
                 </div>
                 <div class="ml-5 flex flex-col">
                     <span class="font-medium mb-px">호스트와 연락하기</span>
-                    <a href="{% url 'conversations:go' reservation.room.host.pk reservation.guest.pk %}" class="font-medium text-green-500">메시지 보내기</a>
+                    <a href="{% url 'conversations:go' reservation.room.host.pk reservation.guest.pk %}" class="font-bold text-green-500 mt-3 ">메시지 보내기</a>
                 </div>
             </div>
 
