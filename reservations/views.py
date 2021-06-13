@@ -1,6 +1,6 @@
 import datetime
 from django.http import Http404
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
 from rooms import models as room_models
@@ -14,14 +14,13 @@ class CreateError(Exception):
 
 def click_reservation(request, room, year, month, day):
     try:
+        print(room, year, month, day)
         date_obj = datetime.datetime(year, month, day)
         room = room_models.Room.objects.get(pk=room)
         booked_day = models.BookedDay.objects.get(day=date_obj, reservation__room=room)
-        print(booked_day)
         host = room.host
         if request.user == host:
             reservation = booked_day.reservation
-            print(reservation.pk)
             return redirect(
                 reverse("reservations:detail", kwargs={"pk": reservation.pk})
             )
@@ -37,8 +36,6 @@ def click_reservation(request, room, year, month, day):
         second_same_day = models.BookedDay.objects.filter(
             day=date_obj + datetime.timedelta(days=1)
         )
-        print(f"first_same_day1:{first_same_day}")
-        print(f"second_same_day1:{second_same_day}")
         if len(first_same_day) == 0:
             first_num = 0
         elif len(first_same_day) >= 1:
@@ -53,9 +50,6 @@ def click_reservation(request, room, year, month, day):
             check_in=date_obj,
             check_out=date_obj + datetime.timedelta(days=1),
         )
-        print(f"same_day2:{first_same_day}")
-        print(f"second_same_day1:{second_same_day}")
-        print(f"first_num:{first_num}")
         if first_num >= 1 or (first_num == 0 and second_num >= 1):
             booked_day1 = models.BookedDay.objects.create(
                 day=date_obj, reservation=reservation
@@ -100,3 +94,14 @@ def edit_reservation(request, pk, verb):
     reservation.save()
     messages.success(request, "Reservation Updated")
     return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
+
+
+def show_reservations(request):
+    user = request.user
+    print(user.pk)
+    reservations = models.Reservation.objects.filter(guest=user.pk)
+    print(reservations)
+
+    return render(
+        request, "reservations/reserved_rooms.html", {"reservations": reservations}
+    )
