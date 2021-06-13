@@ -1,5 +1,7 @@
-<footer
-  class="text-gray-400 container mx-auto text-center py-10 border-t font-medium"
->
-  &copy; 2021 YongJinbnb, Inc. All rights reserved. Please don't copy us.
-</footer>
+{% load i18n %}
+<footer class="container mx-auto text-center py-10 border-t font-medium text-gray-500 flex flex-col">
+    <span>
+        {% trans "Please don't copy us." %}
+    </span>
+    <span>&copy; 2019 Nomad Coders. {% trans "All rights reserved" %}.</span>
+</footer> 

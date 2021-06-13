@@ -11,6 +11,7 @@ django-seed = "*"
 pymysql = "*"
 django-dotenv = "*"
 requests = "*"
+python-gettext = "*"
 
 [dev-packages]
 flake8 = "*"

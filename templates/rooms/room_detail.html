@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load is_booked %}
+{% load is_booked on_favs %}
 
 {% block page_title %}
 
@@ -26,11 +26,20 @@
                     <h4 class="text-3xl font-medium mb-px">{{room.name}}</h4>
                     <span class="text-gray-700 font-light">{{room.city}}</span>
                 </div>
-                <a href="{{room.host.get_absolute_url}}" class="flex flex-col items-center">
+                <a href="{{room.host.get_absolute_url}}" class="flex flex-col items-center ml-4">
                     {% include "mixins/user_avatar.html" with user=room.host %}
                     <span class="mt-2 text-gray-500">{{room.host.first_name}}</span>
                 </a> 
+                <div class="pt-5 ml-10">
+                {% on_favs room as on_favs_boolean %}
+                {% if on_favs_boolean %}
+                    <a class="mb-10 w-2/6 text-red-400 text-4xl" href="{% url 'lists:toggle-room' room.pk %}?action=remove"><i class="fas fa-heart"></i></a>
+                {% else %}
+                    <a class="mb-10 w-2/6 text-red-400 text-4xl" href="{% url 'lists:toggle-room' room.pk %}?action=add"><i class="far fa-heart"></i></a>
+                {% endif %}
+                </div>
             </div>
+                
             <div class="flex border-section">
                 <span class="mr-5 font-light">{{room.room_type}}</span>
                 <span class="mr-5 font-light">{{room.beds}} bed{{room.beds|pluralize}}</span>
