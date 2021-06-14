@@ -16,16 +16,17 @@ import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ROOT_DIR = os.path.dirname(BASE_DIR)
-SECRETS_PATH = os.path.join(ROOT_DIR, "airbnb-clone/secrets.json")
+# ROOT_DIR = os.path.dirname(BASE_DIR)
+# SECRETS_PATH = os.path.join(ROOT_DIR, "airbnb-clone/secrets.json")
 
 # json 파일을 python 객체로 변환
-secrets = json.loads(open(SECRETS_PATH).read())
+# secrets = json.loads(open(SECRETS_PATH).read())
+SECRET_KEY = os.environ.get("DJANGO_SECRET")
 
 # json은 dict 자료형으로 변환되므로 .items() 함수를 이용해 key와 value값을 가져온다.
 # 이때 settings 모듈에 동적으로 할당한다.
-for key, value in secrets.items():
-    setattr(sys.modules[__name__], key, value)
+# for key, value in secrets.items():
+#     setattr(sys.modules[__name__], key, value)
 
 
 # Quick-start development settings - unsuitable for production
@@ -112,11 +113,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "HOST": os.environ.get("RDS_HOST"),
-            "NAME": os.environ.get("RDS_NAME"),
-            "USER": os.environ.get("RDS_USER"),
-            "PASSWORD": os.environ.get("RDS_PASSWORD"),
-            "PORT": "5432",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
         }
     }
 
