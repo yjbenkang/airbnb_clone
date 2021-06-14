@@ -8,14 +8,37 @@
 
     <div class="min-h-75vh">
 
-        <h3 class="my-36 text-3xl text-center text-bold">{{user.first_name}}님이 예약한 객실</h3>
-
         <div class="container mx-auto pb-10 ">
-            <div class="flex flex-wrap -mx-40 mb-10"> 
-                {% for reservation in reservations  %}
-                    {% include 'mixins/reservation_card.html' with reservation=reservation %}
-                {% endfor %}
-            </div>
+            <h3 class="my-6 text-xl text-center text-bold">수락대기중인 객실</h3>
+                <div class="flex flex-wrap -mx-40 mb-10">
+                    {% if pending_reservations.count == 0 %}
+                        <h5 class="w-full my-5 mt-36 text-xl text-center font-bold">수락대기중인 객실이 없습니다.</h5>
+                    {% else %}
+                        {% for reservation in pending_reservations  %}
+                            {% include 'mixins/reservation_card.html' with reservation=reservation %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <hr>
+            <h3 class="my-6 text-xl text-center text-bold">예약확정된 객실</h3>
+                <div class="flex flex-wrap -mx-40 mb-10">
+                {% if confirmed_reservations.count == 0 %}
+                    <h5 class="w-full my-5 mt-36 text-xl text-center font-bold">확정된 객실이 없습니다.</h5>
+                {% else %}
+                    {% for reservation in confirmed_reservations  %}
+                        {% include 'mixins/reservation_card.html' with reservation=reservation %}
+                    {% endfor %}
+                {% endif %}
+                    
+                </div>
+                <hr>
+            <h3 class="my-6 text-xl text-center text-bold">취소된 객실</h3>
+                <div class="flex flex-wrap -mx-40 mb-10">
+                    {% for reservation in canceled_reservations  %}
+                        {% include 'mixins/reservation_card.html' with reservation=reservation %}
+                    {% endfor %}
+                </div>
+                
         </div>
 
 

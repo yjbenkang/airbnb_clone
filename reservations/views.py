@@ -14,7 +14,6 @@ class CreateError(Exception):
 
 def click_reservation(request, room, year, month, day):
     try:
-        print(room, year, month, day)
         date_obj = datetime.datetime(year, month, day)
         room = room_models.Room.objects.get(pk=room)
         booked_day = models.BookedDay.objects.get(day=date_obj, reservation__room=room)
@@ -27,7 +26,7 @@ def click_reservation(request, room, year, month, day):
         else:
             raise CreateError()
     except (room_models.Room.DoesNotExist, CreateError):
-        messages.error(request, "Can't Reserve That Room")
+        messages.error(request, "예약할 수 없습니다.")
         return redirect(reverse("core:home"))
     except models.BookedDay.DoesNotExist:
         first_num = 0
@@ -90,18 +89,29 @@ def edit_reservation(request, pk, verb):
         models.BookedDay.objects.filter(reservation=reservation).delete()
     elif verb == "pending":
         reservation.status = models.Reservation.STATUS_PENDING
-        models.BookedDay.objects.filter(reservation=reservation).delete()
     reservation.save()
-    messages.success(request, "Reservation Updated")
+    messages.success(request, "예약상태 변경이 완료되었습니다.")
     return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
 
 
 def show_reservations(request):
     user = request.user
-    print(user.pk)
-    reservations = models.Reservation.objects.filter(guest=user.pk)
-    print(reservations)
+    pending_reservations = models.Reservation.objects.filter(
+        guest=user.pk, status="pending"
+    )
+    confirmed_reservations = models.Reservation.objects.filter(
+        guest=user.pk, status="confirmed"
+    )
+    canceled_reservations = models.Reservation.objects.filter(
+        guest=user.pk, status="canceled"
+    )
 
     return render(
-        request, "reservations/reserved_rooms.html", {"reservations": reservations}
+        request,
+        "reservations/reserved_rooms.html",
+        {
+            "pending_reservations": pending_reservations,
+            "confirmed_reservations": confirmed_reservations,
+            "canceled_reservations": canceled_reservations,
+        },
     )
