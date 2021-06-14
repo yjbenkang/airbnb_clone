@@ -12,10 +12,12 @@ pymysql = "*"
 django-dotenv = "*"
 requests = "*"
 python-gettext = "*"
+pathspec = "*"
 
 [dev-packages]
 flake8 = "*"
 black = "*"
+awsebcli = "*"
 
 [requires]
 python_version = "3.9"
