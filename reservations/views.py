@@ -96,22 +96,32 @@ def edit_reservation(request, pk, verb):
 
 def show_reservations(request):
     user = request.user
+    today = datetime.date.today()
     pending_reservations = models.Reservation.objects.filter(
         guest=user.pk, status="pending"
     )
+
     confirmed_reservations = models.Reservation.objects.filter(
         guest=user.pk, status="confirmed"
     )
+    finished_reservations = []
+    notyet_reservations = []
+    for confirmed_reservation in confirmed_reservations:
+        if confirmed_reservation.check_out < today:
+            finished_reservations.append(confirmed_reservation)
+        else:
+            notyet_reservations.append(confirmed_reservation)
+
     canceled_reservations = models.Reservation.objects.filter(
         guest=user.pk, status="canceled"
     )
-
     return render(
         request,
         "reservations/reserved_rooms.html",
         {
             "pending_reservations": pending_reservations,
-            "confirmed_reservations": confirmed_reservations,
+            "finished_reservations": finished_reservations,
             "canceled_reservations": canceled_reservations,
+            "notyet_reservations": notyet_reservations,
         },
     )

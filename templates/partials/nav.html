@@ -13,7 +13,7 @@
         {% if request.session.is_hosting %}
             <li class="nav_link"><a href="{% url 'rooms:create' %}">객실 만들기</a></li>
         {% endif %}
-        <li class="nav_link"><a href="{% url 'reservations:show' %}">예약내역</a></li>
+        <li class="nav_link"><a href="{% url 'reservations:show' %}">예약 및 방문내역</a></li>
         <li class="nav_link"><a href="{% url 'lists:see-favs' %}"> <i class="fas fa-heart text-red-400"></i> 좋아요 {{user.list.rooms.count}} </i></a></li>
         <li class="nav_link"><a href="{{user.get_absolute_url}}">프로필</a></li>
         <li class="nav_link"><a href="{% url "users:logout" %}">로그아웃</a></li>
