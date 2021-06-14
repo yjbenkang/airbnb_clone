@@ -13,6 +13,7 @@ django-dotenv = "*"
 requests = "*"
 python-gettext = "*"
 pathspec = "*"
+pipenv-to-requirements = "*"
 
 [dev-packages]
 flake8 = "*"
