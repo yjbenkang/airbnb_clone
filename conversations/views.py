@@ -7,16 +7,21 @@ from . import models
 
 
 def go_conversation(request, a_pk, b_pk):
+    print(a_pk, b_pk)
     user_one = user_models.User.objects.get_or_none(pk=a_pk)
+    print(user_one)
     user_two = user_models.User.objects.get_or_none(pk=b_pk)
+    print(user_two)
     if user_one is not None and user_two is not None:
-        try:
-            conversation = models.Conversation.objects.get(
-                Q(participants=user_one) & Q(participants=user_two)
-            )
-        except models.Conversation.DoesNotExist:
+        conversation = models.Conversation.objects.filter(participants=user_one).filter(
+            participants=user_two
+        )
+        print(conversation)
+        if len(conversation) == 0:
             conversation = models.Conversation.objects.create()
             conversation.participants.add(user_one, user_two)
+        else:
+            conversation = conversation[0]
         return redirect(reverse("conversations:detail", kwargs={"pk": conversation.pk}))
 
 
