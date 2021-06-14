@@ -118,7 +118,7 @@
                             {% is_booked room day as is_booked_bool %}
                             {% if day.number != 0 %}
                                 {% if day.past %}
-                                    <span class="cal-number w-full text-center rounded p-1 cursor-pointer bg-gray-200 text-gray-400">{{day}}</span>
+                                    <span class="cal-number w-full text-center rounded p-1 cursor-default bg-gray-200 text-gray-400">{{day}}</span>
                                 {% elif is_booked_bool %}
                                     
                                     {% if room.host == user %}
