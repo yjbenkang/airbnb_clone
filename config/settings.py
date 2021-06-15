@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # json 파일을 python 객체로 변환
 # secrets = json.loads(open(SECRETS_PATH).read())
-SECRET_KEY = os.environ.get("DJANGO_SECRET")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # json은 dict 자료형으로 변환되므로 .items() 함수를 이용해 key와 value값을 가져온다.
 # 이때 settings 모듈에 동적으로 할당한다.
@@ -35,7 +35,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ["elasticbeanstalk.com", "localhost"]
+ALLOWED_HOSTS = ["elasticbeanstalk.com", "127.0.0.1"]
 
 # Application definition
 
