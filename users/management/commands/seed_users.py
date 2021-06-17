@@ -14,14 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         number = options.get("number")
-        seeder = Seed.seeder(locale='ko_KR')
-        faker = Faker('ko_KR')
-        
-        seeder.add_entity(User, number, {
-            "first_name": lambda x: faker.name()[0:1],
-            "last_name": lambda x: faker.name()[1:4],
-            "is_staff": False,
-            "is_superuser": False
-        })
+        seeder = Seed.seeder()
+        seeder.add_entity(User, number, {"is_staff": False, "is_superuser": False})
         seeder.execute()
         self.stdout.write(self.style.SUCCESS(f"{number} users created!"))
