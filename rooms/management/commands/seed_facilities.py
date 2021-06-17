@@ -4,14 +4,10 @@ from rooms.models import Facility
 
 class Command(BaseCommand):
 
-    help = "This command creates facilities"
+    help = "This command creates many users"
 
-    """ 
     def add_arguments(self, parser):
-        parser.add_argument(
-            "--times", help="How many times do you want me to tell you that I love you?"
-        )
-    """
+        parser.add_argument("--number", help="How many users do you want to create")
 
     def handle(self, *args, **options):
         facilities = [
