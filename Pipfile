@@ -15,6 +15,7 @@ python-gettext = "*"
 pathspec = "*"
 pipenv-to-requirements = "*"
 psycopg2 = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 flake8 = "*"
