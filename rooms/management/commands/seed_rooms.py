@@ -26,7 +26,7 @@ class Command(BaseCommand):
             room_models.Room,
             number,
             {
-                "name": lambda x: seeder.faker.address(),
+                "name": lambda x: faker.address(),
                 "host": lambda x: random.choice(all_users),
                 "room_type": lambda x: random.choice(room_types),
                 "guests": lambda x: random.randint(1, 20),
@@ -45,7 +45,7 @@ class Command(BaseCommand):
             room = room_models.Room.objects.get(pk=pk)
             for i in range(3, random.randint(10, 30)):
                 room_models.Photo.objects.create(
-                    caption=seeder.faker.sentence(),
+                    caption=faker.sentence(),
                     room=room,
                     file=f"room_photos/{random.randint(1, 31)}.webp",
                 )
