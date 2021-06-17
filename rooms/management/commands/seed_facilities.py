@@ -11,12 +11,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         facilities = [
-            "Private entrance",
-            "Paid parking on premises",
-            "Paid parking off premises",
-            "Elevator",
-            "Parking",
-            "Gym",
+            "독립된 출입구",
+            "주차장",
+            "엘리베이터",
+            "주차",
+            "체육관",
         ]
         for f in facilities:
             Facility.objects.create(name=f)

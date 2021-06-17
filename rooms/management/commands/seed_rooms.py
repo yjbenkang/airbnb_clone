@@ -2,6 +2,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.contrib.admin.utils import flatten
 from django_seed import Seed
+from faker import Faker
 from rooms import models as room_models
 from users import models as user_models
 
@@ -18,6 +19,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         number = options.get("number")
         seeder = Seed.seeder()
+        faker = Faker('ko_KR')
         all_users = user_models.User.objects.all()
         room_types = room_models.RoomType.objects.all()
         seeder.add_entity(
