@@ -25,8 +25,8 @@ class Command(BaseCommand):
         seeder.add_entity(
             room_models.Room,
             number,
-            {
-                "name": lambda x: faker.address(),
+            {   "name": lambda x: faker.building_name(),
+                "address": lambda x: faker.address(),
                 "host": lambda x: random.choice(all_users),
                 "room_type": lambda x: random.choice(room_types),
                 "guests": lambda x: random.randint(1, 20),
