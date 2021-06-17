@@ -25,7 +25,7 @@ class Command(BaseCommand):
             "취사시설",
             "조리기구",
             "식기세척기r",
-            "더블베드,
+            "더블베드",
             "스위트룸",
             "주차 무료",
             "무료 무선인터넷",
@@ -35,4 +35,4 @@ class Command(BaseCommand):
         ]
         for a in amenities:
             Amenity.objects.create(name=a)
-        self.stdout.write(self.style.SUCCESS("Amenities created!"))
+        self.stdout.write(self.style.SUCCESS(f"{len(amenities)} Amenities created!"))
