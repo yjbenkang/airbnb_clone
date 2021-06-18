@@ -26,5 +26,7 @@ class LoggedOutOnlyView(UserPassesTestMixin):
 
 
 class LoggedInOnlyView(LoginRequiredMixin):
-
-    login_url = reverse_lazy("users:login")
+    # login_url = reverse_lazy("users:login")
+    def handle_no_permission(self):
+        messages.error(self.request, "로그인이 필요합니다.")
+        return redirect("users:login")

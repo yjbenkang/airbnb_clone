@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from users.mixins import LoggedInOnlyView
 from . import models, forms
+from users.mixins import LoggedInOnlyView
 
 
 class HomeView(ListView):
@@ -20,7 +21,7 @@ class HomeView(ListView):
     context_object_name = "rooms"
 
 
-class RoomDetail(DetailView):
+class RoomDetail(LoggedInOnlyView,DetailView):
 
     """RoomDetail Definition"""
 
