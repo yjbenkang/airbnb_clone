@@ -8,11 +8,7 @@ register = template.Library()
 def on_favs(context, room):
     user = context.request.user
     the_list = list_models.List.objects.get_or_none(user=user, name="Favs.")
-    print(the_list)
     if the_list is not None:
-        print(the_list)
-        print(room)
-        print(room in the_list.rooms.all())
         return room in the_list.rooms.all()
     else:
         return False
