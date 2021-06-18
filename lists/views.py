@@ -9,7 +9,7 @@ def toggle_room(request, room_pk):
     room = room_models.Room.objects.get_or_none(pk=room_pk)
     if room is not None and action is not None:
         the_list, _ = models.List.objects.get_or_create(
-            user=request.user, name="내가 좋아하는 방 목록"
+            user=request.user, name="Favs."
         )
         if action == "add":
             the_list.rooms.add(room)
